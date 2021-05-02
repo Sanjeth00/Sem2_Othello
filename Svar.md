@@ -12,7 +12,8 @@ Encapsulation - Game er kanskje det beste eksemplet på encapsulation siden den 
 Inheritance - Alle spillene er syntax av java inheritance, som tic tac toe og connect 4.
 Polymorphism - 
 
-Man kunne ha laget spill som bondesjakk og ludo, suduko og sjakk derimot er spill som hadde bydd på utfordringer, men mulig å lage.
+Man kunne ha laget spill som battleship, minesweeper, bondesjakk og ludo med nesten samme setup, 
+suduko og sjakk derimot er spill som hadde bydd på utfordringer, men mulig å lage med bruk av dette prosjektet.
 
 ## Oppgave 2
 Othello klassen blir den viktigste klassen som lager selve brettet, lager reglene og passer på at alt er i stell med reglene.

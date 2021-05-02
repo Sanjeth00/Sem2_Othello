@@ -133,14 +133,13 @@ public class Othello extends Game {
     }
 
 
-
     /**
-    public void playGame(Player p1, Player p2, boolean show) {
-        char currentMove = 'X';
+    public void Othello (Player p1, Player p2, boolean show) {
+        Player currentMove = p1;
         while (true) {
             OthelloMove move;
 
-            if (currentMove != 'O') {
+            if (currentMove != p2) {
                 move = p1.makeMove(this);
                 if (move.noMoves()) {
                     if (anyLegalMoves(p2.colour)) {
@@ -151,7 +150,7 @@ public class Othello extends Game {
                         }
                         else {
                             System.out.println("No valid moves. " + p1 + "must pass.");
-                            currentMove = 'O';
+                            currentMove = p2;
                         }
                     }
                     else {
@@ -170,11 +169,11 @@ public class Othello extends Game {
                     String moveString = "The move is   " + Integer.toString(move.getRow()) + ", " + Integer.toString(move.getCol());
                     System.out.println(moveString);
                     System.out.println(newline);
-                    currentMove = 'O';
+                    currentMove = p2;
                     continue;
                 }
             }
-            if (currentMove != 'X') {
+            if (currentMove != p1) {
                 move = p2.makeMove(this);
                 if (move.noMoves()) {
                     if (anyLegalMoves(p1.colour)) {
@@ -185,7 +184,7 @@ public class Othello extends Game {
                         }
                         else {
                             System.out.println("No valid moves." + p2 + " must pass.");
-                            currentMove = 'X';
+                            currentMove = p1;
                         }
                     }
                     else {
@@ -201,7 +200,7 @@ public class Othello extends Game {
                 else {
                     System.out.println(p2 + "'s (White) move.");
                     makinMoves(p2.colour, move);
-                    currentMove = 'X';
+                    currentMove = p1;
                     System.out.println(newline);
                     String moveString = "The move is   " + Integer.toString(move.getRow()) + ", " + Integer.toString(move.getCol());
                     System.out.println(moveString);
@@ -211,7 +210,9 @@ public class Othello extends Game {
             }
         }
     }
-    */
+     */
+
+
     @Override
     public boolean isWinner(Player player) {
         return false;

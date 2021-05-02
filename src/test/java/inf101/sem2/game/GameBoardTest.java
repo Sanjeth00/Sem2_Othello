@@ -29,6 +29,23 @@ class GameBoardTest {
 	}
 
 	@Test
+	void testOthelloBoard() {
+		Location loc = new Location(3, 3);
+		assertEquals(loc, p2);
+		Location lo = new Location(4, 4);
+		assertEquals(lo, p2);
+		Location oc = new Location(3, 4);
+		assertEquals(oc, p1);
+		Location col = new Location(4, 3);
+		assertEquals(col, p1);
+	}
+
+	@Test
+	void testSizeOfOthelloBoard() {
+		assertEquals(8, board.numRows());
+		assertEquals(8, board.numColumns());
+	}
+	@Test
 	void testGameBoard() {
 		assertEquals(7, board.numRows());
 		assertEquals(4, board.numColumns());

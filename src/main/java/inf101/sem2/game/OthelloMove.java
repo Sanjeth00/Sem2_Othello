@@ -24,6 +24,10 @@ public class OthelloMove {
         gg = true;
     }
 
+    public void noLegalmoves() {
+        noMove = true;
+    }
+
     public boolean gameOver() {
         return gameOver();
     }
