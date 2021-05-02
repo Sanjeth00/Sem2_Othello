@@ -3,6 +3,8 @@ package inf101.sem2.player;
 import inf101.grid.Location;
 import inf101.sem2.game.Game;
 import inf101.sem2.game.GameBoard;
+import inf101.sem2.game.Othello;
+import inf101.sem2.game.OthelloMove;
 
 public class DumbPlayer extends AbstractPlayer {
 
@@ -22,5 +24,6 @@ public class DumbPlayer extends AbstractPlayer {
 		}
 		return null;
 	}
+
 
 }

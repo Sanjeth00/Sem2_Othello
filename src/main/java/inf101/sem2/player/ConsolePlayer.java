@@ -6,9 +6,7 @@ import static inf101.sem2.terminal.TerminalInput.readName;
 import java.util.Scanner;
 
 import inf101.grid.Location;
-import inf101.sem2.game.ConnectFour;
-import inf101.sem2.game.Game;
-import inf101.sem2.game.GameBoard;
+import inf101.sem2.game.*;
 
 /**
  * This Player enables the user to play the game by using the keyboard.
@@ -64,6 +62,7 @@ public class ConsolePlayer extends AbstractPlayer {
 
 		return getLocation(game.getGameBoard());
 	}
+
 
 	/**
 	 * Reads input for the FourInARow game

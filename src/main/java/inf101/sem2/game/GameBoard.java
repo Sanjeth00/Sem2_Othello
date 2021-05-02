@@ -7,9 +7,11 @@ import inf101.sem2.player.Player;
 
 public class GameBoard extends Grid<Player> {
 
+
 	public GameBoard(int rows, int cols) {
 		super(rows, cols);
 	}
+
 
 	@Override
 	public void set(Location loc, Player elem) {

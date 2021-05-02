@@ -5,6 +5,8 @@ import java.util.List;
 
 import inf101.grid.Location;
 import inf101.sem2.game.Game;
+import inf101.sem2.game.Othello;
+import inf101.sem2.game.OthelloMove;
 
 /**
  * This Player chooses a random move among all the possible moves.
@@ -14,7 +16,7 @@ import inf101.sem2.game.Game;
  *
  * @author Martin Vatshelle - martin.vatshelle@uib.no
  */
-public class RandomPlayer extends AbstractPlayer {
+public abstract class RandomPlayer extends AbstractPlayer {
 
 	public RandomPlayer(char piece, String name) {
 		super(piece, name);

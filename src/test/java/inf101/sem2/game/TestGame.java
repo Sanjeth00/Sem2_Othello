@@ -27,6 +27,10 @@ class TestGame {
 		game = new ConnectFour(new TerminalGraphics(), p1, p2);
 		game.run();
 		assertTrue(game.gameOver());
+
+		game = new Othello(new TerminalGraphics(), p1, p2);
+		game.run();
+		assertTrue(game.gameOver());
 	}
 
 }

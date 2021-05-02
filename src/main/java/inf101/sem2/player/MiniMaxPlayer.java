@@ -2,6 +2,8 @@ package inf101.sem2.player;
 
 import inf101.grid.Location;
 import inf101.sem2.game.Game;
+import inf101.sem2.game.Othello;
+import inf101.sem2.game.OthelloMove;
 
 /**
  * This AI is based on an algorithm that is not curriculum for INF101, but maybe for INF102.
@@ -37,6 +39,7 @@ public class MiniMaxPlayer extends AbstractPlayer {
 		Strategy best = bestMove(game, depth);
 		return best.move;
 	}
+
 
 	/**
 	 * Chooses the move that maximizes the players score
