@@ -60,11 +60,11 @@ public class Othello extends Game {
         return i;
     }
 
-    public boolean legalMoves(Location l) {
+    public boolean canPlace(Location l) {
         return board.canPlace(l);
     }
 
-    public void makinMoves(Location l) {
+    public void makeMove(Location l) {
 
         try {
             if (anyLegalMoves(l) != null) {
@@ -76,30 +76,43 @@ public class Othello extends Game {
         }
     }
 
-    /**
     public boolean theHood(Location l) {
-        for (GridDirection egd : GridDirection.EIGHT_DIRECTIONS) {
-            Location hood = l.getNeighbor(egd);
+        for (GridDirection gd : GridDirection.EIGHT_DIRECTIONS) {
+            Location houses = l.getNeighbor(gd);
 
-            try {
-                if (board.get(l) == getCurrentPlayer()) {
-                    return false;
-                }
-                if (board.get(hood) instanceof Player) {
-                    if (board.get(hood) != getCurrentPlayer() && board.get(hood) != null) {
-                        return true;
-                    }
-
-                }
-
-        } catch (Exception e) {
-                e.printStackTrace();
+            if (board.get(l) == getCurrentPlayer()) {
+                return false;
             }
-            return false;
-    }
-    */
+            else if (board.get(houses) instanceof Player) {
+                if (board.get(houses) != getCurrentPlayer() && board.get(houses) != null) {
+                    return true;
+                }
+            }
 
-    public ArrayList<GridDirection> anotherHood(Location l) {
+        }
+        return false;
+    }
+
+    public Location anyLegalMoves(Location l) {
+
+        ArrayList<Location> finnaFlip = new ArrayList<>();
+
+        if (theHood(l)) {
+            for (GridDirection gd : hoodMembers(l)) {
+                finnaFlip.addAll(waysToGo(l, gd));
+                continue;
+            }
+        }
+        if (!finnaFlip.isEmpty()) {
+            flippin(finnaFlip);
+            return l;
+        }
+        return null;
+    }
+
+
+
+    public ArrayList<GridDirection> hoodMembers(Location l) {
         ArrayList<GridDirection> hood = new ArrayList<GridDirection>();
         for (GridDirection gd : GridDirection.EIGHT_DIRECTIONS) {
             Location traphouse = l.getNeighbor(gd);
@@ -107,7 +120,7 @@ public class Othello extends Game {
                 continue;
             }
                 if(board.get(traphouse) != null) {
-                    if(board.get(traphouse) instanceof Player) {
+                    if(board.get(traphouse) != null) {
                         if (board.get(traphouse) != getCurrentPlayer()) {
                             hood.add(gd);
                         }
@@ -141,23 +154,6 @@ public class Othello extends Game {
         return locationsForFlippin;
     }
 
-
-    public Location anyLegalMoves(Location l) {
-
-        ArrayList<Location> finnaFlip = new ArrayList<>();
-
-        if (theHood(l)) {
-            for (GridDirection gd : anotherHood(l)) {
-                finnaFlip.addAll(waysToGo(l, gd));
-                continue;
-            }
-        }
-        if (!finnaFlip.isEmpty()) {
-            wFlip(finnaFlip);
-            return l;
-        }
-        return null;
-    }
 
     @Override
     public boolean isWinner(Player player) {
@@ -203,10 +199,10 @@ public class Othello extends Game {
     public List<Location> moves() {
         ArrayList<Location> move = new ArrayList<>();
         for (Location l : super.getPossibleMoves()) {
-            if (!hoodMembers(l).isEmpty() && board.isOnGrid(l) && fakeHood(l)) {
+            if (!hoodMembers(l).isEmpty() && board.isOnGrid(l) && theHood(l)) {
                 for (GridDirection gd : hoodMembers(l)) {
                     //Location neighbor = loc.getNeighbor(gd)
-                    if (!checkin(l, gd).isEmpty() && !move.contains(l)) {
+                    if (!waysToGo(l, gd).isEmpty() && !move.contains(l)) {
                         move.add(l);
                     }
                 }
