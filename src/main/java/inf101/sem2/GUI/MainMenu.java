@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+
 import inf101.sem2.game.ConnectFour;
 import inf101.sem2.game.Game;
 import inf101.sem2.game.Othello;

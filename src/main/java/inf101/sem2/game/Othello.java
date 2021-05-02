@@ -1,21 +1,27 @@
 package inf101.sem2.game;
 
+import inf101.grid.Grid;
+import inf101.grid.Location;
 import inf101.sem2.player.Player;
 
 public class Othello extends Game {
 
+
     public Othello(Graphics graphics, Player p1, Player p2) {
-        this(graphics);
+        super(new GameBoard(8, 8), graphics);
         players.add(p1);
         players.add(p2);
     }
 
+
     public Othello(Graphics graphics) {
         super(new GameBoard(8, 8), graphics);
+
     }
 
     public Othello(Graphics graphics, Iterable<Player> players) {
         super(new GameBoard(8, 8), graphics, players);
+
     }
 
     @Override

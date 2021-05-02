@@ -39,10 +39,10 @@ public class GameBoard extends Grid<Player> {
 		}
 	}
 
+
 	@Override
 	public String toString() {
 		String s = "";
-
 		for(int row = 0; row < numRows(); row++) {
 			//print row
 			for(int col = 0; col < numColumns(); col++) {
@@ -71,7 +71,6 @@ public class GameBoard extends Grid<Player> {
 			}
 
 		}
-
 		return s;
 	}
 
@@ -126,4 +125,5 @@ public class GameBoard extends Grid<Player> {
 		fillCopy(board);
 		return board;
 	}
+
 }
