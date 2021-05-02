@@ -100,6 +100,7 @@ public abstract class Game {
 		players.nextPlayer();
 	}
 
+
 	/**
 	 * Adds a player to the game.
 	 * 

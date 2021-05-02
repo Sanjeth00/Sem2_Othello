@@ -128,4 +128,6 @@ public class GameBoard extends Grid<Player> {
 		return board;
 	}
 
+	public void flip(Location l, Player currentPlayer) {
+	}
 }

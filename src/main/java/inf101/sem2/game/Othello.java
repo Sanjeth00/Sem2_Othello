@@ -1,15 +1,24 @@
 package inf101.sem2.game;
 
+import inf101.grid.Grid;
+import inf101.grid.GridDirection;
 import inf101.grid.Location;
 import inf101.sem2.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Othello extends Game {
 
-    public static String newline = System.getProperty("line.separator");
 
+    @Override
+    public String getName() {
+        return "Othello";
+    }
 
     public Othello(Graphics graphics, Player p1, Player p2) {
+
         super(new GameBoard(8, 8), graphics);
         players.add(p1);
         players.add(p2);
@@ -24,221 +33,197 @@ public class Othello extends Game {
 
     public Othello(Graphics graphics) {
         super(new GameBoard(8, 8), graphics);
-
     }
 
     public Othello(Graphics graphics, Iterable<Player> players) {
+
         super(new GameBoard(8, 8), graphics, players);
+
         board.set(new Location(3, 4), getCurrentPlayer());
         board.set(new Location(4, 3), getCurrentPlayer());
+
         super.players.nextPlayer();
+
         board.set(new Location(3, 3), getCurrentPlayer());
         board.set(new Location(4, 4), getCurrentPlayer());
 
     }
 
+    public int counter(Player player) {
 
-
-    public char enemy(char player) {
-        if (player == 'X')
-            return 'O';
-        else
-            return 'X';
-    }
-
-    public int counter(char symbol) {
-        if (Character.isUpperCase(symbol)) {
-            symbol = Character.toLowerCase(symbol);
-        }
-        int count = 0;
-        for (int c = 1; c <= 8; c++) {
-            for (int r = 1; r <= 8; r++) {
-                Location loc = new Location(c,r);
-                if (loc.equals(symbol)) {
-                    count++;
-                }
+        int i = 0;
+        for(Location l : board.locations()) {
+            if(board.get(l) == player) {
+                i++;
             }
         }
-        return count;
+        return i;
     }
 
-    public boolean wFlip(char player, int r, int c, int dir) {
-        int dirI[] = {-1,1,0,0,1,-1,1,-1};
-        int dirJ[] = {0,0,1,-1,1,-1,-1,1};
-        int row = r, col = c;
-        boolean flag = false;
-        for (int i = 0; i <8; i++) {
-            row += dirI[dir];
-            col += dirJ[dir];
-            Location loc = new Location(row,col);
-            if (loc.equals(enemy(player))) {
-                flag = true;
-            }
-            else if (loc.equals(player)) {
-                if (flag)
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
-        }
-        return false;
+    public boolean legalMoves(Location l) {
+        return board.canPlace(l);
     }
 
-    public void mFlip(char player, int r, int c, int dir) {
-        int dirI[] = {-1,1,0,0,1,-1,1,-1};
-        int dirJ[] = {0,0,1,-1,1,-1,-1,1};
-        if (wFlip(player,r,c,dir)) {
-            r += dirI[dir];
-            c += dirJ[dir];
-            Location loc = new Location(r, c);
-            while (!loc.equals(player)) {
-                loc.equals(player);
-                r += dirI[dir];
-                c += dirJ[dir];
+    public void makinMoves(Location l) {
+
+        try {
+            if (anyLegalMoves(l) != null) {
+                players.nextPlayer();
             }
         }
-    }
-
-    public boolean legalMove(char player, int r, int c) {
-        Location loc = new Location(r,c);
-        if (loc.equals(' ')) {
-            for (int k = 0; k < 8; k++)
-                if (wFlip(player,r,c,k)) {
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    public boolean anyLegalMoves(char player) {
-        for (int i = 1; i <= 8; i++)
-            for (int j = 1; j <= 8; j++)
-                if (legalMove(player,i,j))
-                    return true;
-        return false;
-    }
-
-    public void makinMoves(char player, OthelloMove m) {
-        int r = m.getRow();
-        int c = m.getCol();
-        Location loc = new Location(r,c);
-        if (legalMove(player,r,c)) {
-            loc.equals(player);
-            for (int i = 0; i < 8; i++) {
-                mFlip(player,r,c,i);
-            }
+        catch (Exception e) {
+            System.out.println("Invalid move.");
         }
     }
-
 
     /**
-    public void Othello (Player p1, Player p2, boolean show) {
-        Player currentMove = p1;
-        while (true) {
-            OthelloMove move;
+    public boolean theHood(Location l) {
+        for (GridDirection egd : GridDirection.EIGHT_DIRECTIONS) {
+            Location hood = l.getNeighbor(egd);
 
-            if (currentMove != p2) {
-                move = p1.makeMove(this);
-                if (move.noMoves()) {
-                    if (anyLegalMoves(p2.colour)) {
-                        System.out.println(p1 + "'s (Black) move");
-                        if (move.gameOver()) {
-                            System.out.println(p1 + " concedes. Game over!\n");
-                            break;
-                        }
-                        else {
-                            System.out.println("No valid moves. " + p1 + "must pass.");
-                            currentMove = p2;
-                        }
-                    }
-                    else {
-                        System.out.println("Game over!\n");
-                        int differ = counter(p1.colour) - counter(p2.colour);
-                        if (differ < 0)
-                            System.out.println(p2 + " is the winner!");
-                        else System.out.println(p1 + " is the winner!");
-                        break;
-                    }
+            try {
+                if (board.get(l) == getCurrentPlayer()) {
+                    return false;
                 }
-                else {
-                    System.out.println(p1 + "'s (Black) move.");
-                    makinMoves(p1.colour, move);
-                    System.out.println(newline);
-                    String moveString = "The move is   " + Integer.toString(move.getRow()) + ", " + Integer.toString(move.getCol());
-                    System.out.println(moveString);
-                    System.out.println(newline);
-                    currentMove = p2;
-                    continue;
+                if (board.get(hood) instanceof Player) {
+                    if (board.get(hood) != getCurrentPlayer() && board.get(hood) != null) {
+                        return true;
+                    }
+
                 }
+
+        } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (currentMove != p1) {
-                move = p2.makeMove(this);
-                if (move.noMoves()) {
-                    if (anyLegalMoves(p1.colour)) {
-                        System.out.println(p2 + "'s (White) move.");
-                        if (move.gameOver()) {
-                            System.out.println(p1 + " concedes. Game over!\n");
-                            break;
-                        }
-                        else {
-                            System.out.println("No valid moves." + p2 + " must pass.");
-                            currentMove = p1;
+            return false;
+    }
+    */
+
+    public ArrayList<GridDirection> anotherHood(Location l) {
+        ArrayList<GridDirection> hood = new ArrayList<GridDirection>();
+        for (GridDirection gd : GridDirection.EIGHT_DIRECTIONS) {
+            Location traphouse = l.getNeighbor(gd);
+            if(!board.isOnGrid(traphouse)) {
+                continue;
+            }
+                if(board.get(traphouse) != null) {
+                    if(board.get(traphouse) instanceof Player) {
+                        if (board.get(traphouse) != getCurrentPlayer()) {
+                            hood.add(gd);
                         }
                     }
-                    else {
-                        System.out.println("Game over!\n");
-                        int differ = counter(p1.colour) - counter(p2.colour);
-                        if (differ < 0)
-                            System.out.println(p2 + " is the winner.");
-                        else
-                            System.out.println(p1 + " is the winner.");
-                        break;
-                    }
                 }
-                else {
-                    System.out.println(p2 + "'s (White) move.");
-                    makinMoves(p2.colour, move);
-                    currentMove = p1;
-                    System.out.println(newline);
-                    String moveString = "The move is   " + Integer.toString(move.getRow()) + ", " + Integer.toString(move.getCol());
-                    System.out.println(moveString);
-                    System.out.println(newline);
-                    continue;
-                }
+        }
+        return hood;
+    }
+
+    public ArrayList<Location> waysToGo(Location l, GridDirection gd) {
+        ArrayList<Location> locationsForFlippin = new ArrayList<>();
+        while (true) {
+            Location house = l.getNeighbor(gd);
+            if(!board.isOnGrid(house)) {
+                locationsForFlippin.clear();
+                break;
+            }
+            if (board.get(l.getNeighbor(gd)) == getCurrentPlayer()) {
+                locationsForFlippin.add(l);
+                break;
+            }
+            if (l.getNeighbor(gd) == null) {
+                locationsForFlippin.clear();
+                break;
+            }
+            if (board.get(l.getNeighbor(gd)) != getCurrentPlayer()) {
+                locationsForFlippin.add(l);
+                l = l.getNeighbor(gd);
             }
         }
+        return locationsForFlippin;
     }
-     */
 
+
+    public Location anyLegalMoves(Location l) {
+
+        ArrayList<Location> finnaFlip = new ArrayList<>();
+
+        if (theHood(l)) {
+            for (GridDirection gd : anotherHood(l)) {
+                finnaFlip.addAll(waysToGo(l, gd));
+                continue;
+            }
+        }
+        if (!finnaFlip.isEmpty()) {
+            wFlip(finnaFlip);
+            return l;
+        }
+        return null;
+    }
 
     @Override
     public boolean isWinner(Player player) {
-        return false;
-    }
 
-    @Override
-    public boolean gameOver() {
-        for(Player p : players) {
-            if(isWinner(p)) {
-                return true;
+        for (Player gamer : players) {
+            if (gamer != player) {
+                if (counter(gamer) == counter(player)) {
+                    graphics.displayMessage("Draw!");
+                    return false;
+                }
+                else if (counter(gamer) < counter(player)) {
+                    return true;
+                }
             }
         }
-        return board.isFull();
+        return false;
     }
 
     @Override
     public Game copy() {
+
         Othello game = new Othello(graphics);
         copyTo(game);
         return game;
     }
 
-
-
     @Override
-    public String getName() {
-        return "Othello";
+    public boolean gameOver() {
+
+        if (getPossibleMoves().isEmpty())
+            players.nextPlayer();
+            if (getPossibleMoves().isEmpty())
+                return true;
+        return board.isFull();
     }
+
+    public void flippin(ArrayList<Location> list) {
+        for (Location l : list) {
+            board.flip(l, getCurrentPlayer());
+        }
+    }
+
+    public List<Location> moves() {
+        ArrayList<Location> move = new ArrayList<>();
+        for (Location l : super.getPossibleMoves()) {
+            if (!hoodMembers(l).isEmpty() && board.isOnGrid(l) && fakeHood(l)) {
+                for (GridDirection gd : hoodMembers(l)) {
+                    //Location neighbor = loc.getNeighbor(gd)
+                    if (!checkin(l, gd).isEmpty() && !move.contains(l)) {
+                        move.add(l);
+                    }
+                }
+            }
+        }
+        return move;
+    }
+
+    public void restart() {
+        board.clear();
+        players.restart();
+        board.set(new Location(3, 3), getCurrentPlayer());
+        board.set(new Location(4, 4), getCurrentPlayer());
+        board.set(new Location(3, 4), players.nextPlayer());
+        board.set(new Location(4, 3), getCurrentPlayer());
+        graphics.display(board);
+    }
+
+
 }

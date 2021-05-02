@@ -5,8 +5,6 @@ import java.util.List;
 
 import inf101.grid.Location;
 import inf101.sem2.game.Game;
-import inf101.sem2.game.Othello;
-import inf101.sem2.game.OthelloMove;
 
 /**
  * This Player chooses a random move among all the possible moves.

@@ -5,8 +5,6 @@ import javax.swing.JOptionPane;
 import inf101.grid.Location;
 import inf101.sem2.GUI.GameGUI;
 import inf101.sem2.game.Game;
-import inf101.sem2.game.Othello;
-import inf101.sem2.game.OthelloMove;
 
 
 /**
